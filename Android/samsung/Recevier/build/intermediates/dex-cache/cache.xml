@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/steve/Dropbox (Mixpanel)/Code/customs/samsung/s-poc/receiver/build/intermediates/exploded-aar/com.mixpanel.android/mixpanel-android/4.1.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="02425f2ab4e4b4a8d8c97fbcc05b7f3849d36c5b">
+        <dex dex="/Users/steve/Dropbox (Mixpanel)/Code/customs/samsung/s-poc/receiver/build/intermediates/pre-dexed/debug/classes-78f625a95e8be150eae57839265addbc43257677.jar" />
+    </item>
+
+</items>

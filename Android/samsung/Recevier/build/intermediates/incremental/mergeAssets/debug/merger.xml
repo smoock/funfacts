@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="4.1.0"><source path="/Users/steve/Dropbox (Mixpanel)/Code/customs/samsung/s-poc/receiver/build/intermediates/exploded-aar/com.mixpanel.android/mixpanel-android/4.1.0/assets"/></dataSet><dataSet config="main"><source path="/Users/steve/Dropbox (Mixpanel)/Code/customs/samsung/s-poc/receiver/assets"/></dataSet><dataSet config="debug"><source path="/Users/steve/Dropbox (Mixpanel)/Code/customs/samsung/s-poc/receiver/build-types/debug/assets"/></dataSet></merger>
