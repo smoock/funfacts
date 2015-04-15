@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <!-- start Mixpanel -->
+        <script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+        for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
+        mixpanel.init("8950dac216646efa64092d982b5403ba");
+        </script><!-- end Mixpanel -->
+        <script src="json2.js"></script> <!-- https://github.com/douglascrockford/JSON-js/blob/master/json2.js -->
+    </head>
+    <body>
+	<p>
+        <!-- allow the user to see the different images stored in the in-app campaign -->
+            <button type="button" class="btn" onclick="document.getElementById('decide_image').src=source_big">Use Retina Image</button>
+            <button type="button" class="btn" onclick="document.getElementById('decide_image').src=source">Use Smaller Image</button>
+            <br />
+        <!-- tell Mixpanel that the user has seen the Notification and we'll stop sending it! -->
+	        <button type="button" class="btn" onclick="assertDelivery();">Assert that you have seen this notification, then refresh the page</button>
+	</p>
+	<script>
+
+            //This shouldn't be the way you do this! You shouldn't need to pass the distinct_id as a url parameter! 
+            //You should have the user's identifier handy from your server
+            //...
+            //This POC is just too janky to have a framework driving it
+            var distinct_id = window.location.search.substr(1).split('=');
+            var TOKEN = "8950dac216646efa64092d982b5403ba";
+            mixpanel.identify(decodeURIComponent(distinct_id[1]).replace(/\+/g, " "));
+            
+
+            //request whatever is waiting for this user as a campaign in Mixpanel, use lib=android to qualify just like mobile users
+            var req_url = "http://api.mixpanel.com/decide?lib=android&version=1&token=" + TOKEN + "&distinct_id=" + distinct_id[1];
+            var req = new XMLHttpRequest();
+            req.withCredentials = true;
+            req.open("GET", req_url, false);
+            req.send(null);
+
+            //decide will respond with both notifications and surveys, just grab the first notification for now
+            var notif = ((JSON.parse(req.responseText)).notifications)[0];
+            console.log(notif)
+            
+            //make the image object
+		    var img = document.createElement("img")
+            img.id = "decide_image";
+        
+            if(notif)
+            {
+                //grab the image_url that we send
+                var source = notif.image_url;
+
+                //prepare a link to the big image
+                var source_big = source.split('.');
+                source_big[source_big.length - 2] = source_big[source_big.length -2] + "@2x";
+                source_big = source_big.join('.');
+
+            } else {
+
+                //grab a default image instead
+                var source = "nosoup.jpg";
+                var buttons = document.getElementsByClassName("btn")
+                for (i=0;i<buttons.length;i++){
+                    buttons[i].style.display = "none";
+                }
+            
+            }   
+
+            //display the image
+            img.src = source;
+            document.body.appendChild(img);
+
+            function assertDelivery() {
+                mixpanel.people.append({
+                    '$campaigns' : notif.id,
+                    '$notifications' : {
+                        'campaign_id' : notif.id,
+                        'message_id' : notif.message_id,
+                        'time' : (new Date()).toISOString(),
+                        'type' : 'inapp'
+                    }
+                });
+                mixpanel.track('$campaign_delivery', {
+                    'campaign_id' : notif.id,
+                    'message_id' : notif.message_id,
+                    'message_type' : 'inapp',
+                    'message_subtype' : notif.type
+                });
+            }
+	</script>
+    </body>
+</html>
