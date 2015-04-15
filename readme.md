@@ -3,6 +3,7 @@
 ## Android
 The Android sample "FunFacts" can be found in full detail as part of a tutorial on Team Treehouse
 * http://teamtreehouse.com/library/build-a-simple-android-app
+
 There's also an example of code that interacts with a deep link to track the parameters of an intent to Mixpanel in the Receiver sample
 
 ## iOS
