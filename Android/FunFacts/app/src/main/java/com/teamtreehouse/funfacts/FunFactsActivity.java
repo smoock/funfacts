@@ -25,9 +25,11 @@ public class FunFactsActivity extends Activity {
     public static final String TAG = FunFactsActivity.class.getSimpleName();
     Context context = this;
 
+    // create objects for factbook and colorwheel
     private FactBook mFactBook = new FactBook();
     private ColorWheel mColorWheel = new ColorWheel();
 
+    // declare Mixpanel variables
     String projectToken = "sm_android";
     MixpanelAPI mixpanel;
     MixpanelAPI.People people;
@@ -39,12 +41,16 @@ public class FunFactsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fun_facts);
 
+        // initialize mixpanel
         mixpanel = MixpanelAPI.getInstance(this, projectToken);
         people = mixpanel.getPeople();
         String distinctId = mixpanel.getDistinctId();
         people.identify(distinctId);
+
+        // register app for push notifications
         people.initPushHandling("946038181029");
 
+        //create some props and track app open event
         try {
             JSONObject props = new JSONObject();
             props.put("User Type", "Free");
@@ -53,8 +59,6 @@ public class FunFactsActivity extends Activity {
             mixpanel.timeEvent("Session End");
             people.set("User Type", "Free");
             people.setOnce("Facts Viewed", 0);
-
-
         }
         catch (JSONException e) {
             Log.e("FUNFACTS", "Unable to add props to json obj", e);
@@ -65,17 +69,14 @@ public class FunFactsActivity extends Activity {
         final Button showFactButton = (Button) findViewById(R.id.showFactButton);
         final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
         final Button userInfoButton = (Button) findViewById(R.id.userInfoButton);
-        final Button submissionButton = (Button) findViewById(R.id.submitButton);
-        final RelativeLayout userInfoLayout = (RelativeLayout) findViewById(R.id.userInfoLayout);
 
-        final EditText firstText = (EditText) findViewById(R.id.firstNameText);
-        final EditText lastText = (EditText) findViewById(R.id.lastNameText);
-        final EditText phoneText = (EditText) findViewById(R.id.phoneText);
-        final EditText emailText = (EditText) findViewById(R.id.emailText);
 
+        // setup click listener for the view fact button
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
+            // when the button is clicked, do the following
             public void onClick(View view) {
+                // increment the number of clicks
                 clicks++;
                 String fact = mFactBook.getFact();
                 // Update the label with our dynamic fact
@@ -85,6 +86,7 @@ public class FunFactsActivity extends Activity {
                 relativeLayout.setBackgroundColor(color);
                 showFactButton.setTextColor(color);
 
+                // track the fact click as an event
                 try {
                     JSONObject props = new JSONObject();
                     props.put("Color", color);
@@ -93,41 +95,26 @@ public class FunFactsActivity extends Activity {
                     mixpanel.track("New Fact", props);
                     people.increment("Facts Viewed", 1);
                     people.trackCharge(1, null);
-
-
                 }
                 catch (JSONException e) {
                     Log.e("FUNFACTS", "Unable to add props to json obj", e);
                 }
             }
         };
+
+        // set the listener to fire when the showFactButton is clicked
         showFactButton.setOnClickListener(listener);
 
+        // create listener for the user info button
         View.OnClickListener userListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, EnterUserInfo.class);
+                // start EnterUserInfo activity
+//                EnterUserInfo userInfo = new EnterUserInfo();
                 setContentView(R.layout.activity_enter_user_info);
             }
         };
         userInfoButton.setOnClickListener(userListener);
-
-        View.OnClickListener submissionListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view2) {
-                String firstName = firstText.getText().toString();
-                String lastName = lastText.getText().toString();
-                String phone = phoneText.getText().toString();
-                String email = emailText.getText().toString();
-
-                people.set("$first_name", firstName);
-                people.set("$last_name", lastName);
-                people.set("$phone", phone);
-                people.set("$email", email);
-                setContentView(R.layout.activity_fun_facts);
-            }
-        };
-        submissionButton.setOnClickListener(submissionListener);
 
         //Toast.makeText(this, "Yay! Our Activity was created!", Toast.LENGTH_LONG).show();
         Log.d(TAG, "We're logging from the onCreate() method!");
