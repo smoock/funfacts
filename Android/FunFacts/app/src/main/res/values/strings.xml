@@ -4,5 +4,6 @@
     <string name="app_name">Fun Facts</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_enter_user_info">EnterUserInfo</string>
 
 </resources>

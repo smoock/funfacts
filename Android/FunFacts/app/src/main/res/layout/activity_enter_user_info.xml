@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".FunFactsActivity"
+    android:background="#ff51b46d"
+    android:id="@+id/userInfoLayout">
+
+    <TextView
+        android:text="First Name?\n\nLast Name?\n\nNumber?\n\nEmail?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="#80ffffff"
+        android:id="@+id/textView" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/submitButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/white"
+        android:textColor="#ff51b46d" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/firstNameText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:autoText="false"
+        android:minWidth="100dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lastNameText"
+        android:layout_below="@+id/firstNameText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:minWidth="100dp" />
+
+    <EditText
+        android:inputType="phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/phoneText"
+        android:layout_below="@+id/lastNameText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:minWidth="100dp" />
+
+    <EditText
+        android:inputType="textEmailAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailText"
+        android:layout_below="@+id/phoneText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:minWidth="100dp" />
+</RelativeLayout>

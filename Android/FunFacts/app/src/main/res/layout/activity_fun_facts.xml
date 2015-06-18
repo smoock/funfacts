@@ -33,6 +33,16 @@
         android:layout_height="wrap_content"
         android:text="Show Another Fun Fact"
         android:id="@+id/showFactButton"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/white"
+        android:textColor="#ff51b46d"
+        android:layout_above="@+id/userInfoButton" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter User Information"
+        android:id="@+id/userInfoButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/white"
